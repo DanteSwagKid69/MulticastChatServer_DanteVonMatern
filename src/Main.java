@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 public class Main {
@@ -12,10 +14,26 @@ public class Main {
         }
 
         // Create a MulticastSocket
-        MulticastSocket serverMulticast = new MulticastSocket(portNumber);
+        MulticastSocket serverMulticastSocket = new MulticastSocket(portNumber);
         System.out.println("MulticastSocket is created at port " + portNumber);
 
         // Determine the IP adress of host, given the host name
+        InetAddress group = InetAddress.getByName("225.4.5.6");
+
+        // getByName- returns IP adress of given host
+        serverMulticastSocket.joinGroup(group);
+        System.out.println("joinGroup method is called...");
+        boolean infinate = true;
+
+        // Continually recevies date and prints them
+        while(infinate) {
+            byte[] buf = new byte[1024];
+            DatagramPacket data = new DatagramPacket(buf, buf.length);
+            serverMulticastSocket.receive(data);
+            String msg = new String(data.getData()).trim();
+            System.out.println("Message recieved from client = " + msg);
+        }
+        serverMulticastSocket.close();
     }
 
 }

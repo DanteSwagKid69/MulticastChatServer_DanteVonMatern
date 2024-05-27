@@ -3,12 +3,12 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class Main {
+public class MulticaskChatServer {
     public static void main(String[] args) throws IOException {
 
 
         // Default port number we are going to use
-        int portNumber = 500;
+        int portNumber = 50000;
         if (args.length >= 1) {
             portNumber = Integer.parseInt(args[0]);
         }
@@ -23,15 +23,16 @@ public class Main {
         // getByName- returns IP adress of given host
         serverMulticastSocket.joinGroup(group);
         System.out.println("joinGroup method is called...");
-        boolean infinate = true;
+
+        boolean infinite = true;
 
         // Continually recevies date and prints them
-        while(infinate) {
-            byte[] buf = new byte[1024];
+        while(infinite) {
+            byte[] buf= new byte[1024];
             DatagramPacket data = new DatagramPacket(buf, buf.length);
             serverMulticastSocket.receive(data);
             String msg = new String(data.getData()).trim();
-            System.out.println("Message recieved from client = " + msg);
+            System.out.println("Message received from client = " + msg);
         }
         serverMulticastSocket.close();
     }
